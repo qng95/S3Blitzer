@@ -10,6 +10,7 @@ Thank you for considering contributing to S3Blitzer! We appreciate your interest
   - [Creating Issues](#creating-issues)
   - [Creating Pull Requests](#creating-pull-requests)
 - [Style Guide](#style-guide)
+- [Conventional Commit Message](#git-commit-prefixes)
 - [License](#license)
 
 ## Code of Conduct
@@ -34,7 +35,7 @@ Please note that this project has adopted a [Code of Conduct](CODE_OF_CONDUCT.md
 
 4. Make your changes and test them thoroughly.
 
-5. Commit your changes using [conventional commit message](README.md#git-commit-prefixes) format.
+5. Commit your changes using [Conventional Commit Message](#git-commit-prefixes) format.
 
 6. Push your changes to your forked repository.
 
@@ -54,7 +55,7 @@ If you encounter any bugs, have feature requests, or find any areas of improveme
 
 We welcome contributions from the community. When creating a pull request, please ensure the following:
 
-1. Follow the [conventional commit message](README.md#git-commit-prefixes) format for your commits.
+1. Follow the [Conventional Commit Message](#git-commit-prefixes) format for your commits.
 
 2. Provide a clear and concise description of your changes in the pull request.
 
@@ -67,6 +68,29 @@ We welcome contributions from the community. When creating a pull request, pleas
 ## Style Guide
 
 To maintain consistency and readability of the codebase, we follow the [Python PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide. Please ensure your code adheres to these guidelines.
+
+## Conventional Commit Message
+
+Git commit prefixes are not a standard feature in Git itself, but they are commonly used by development teams to provide meaningful information and structure to commit messages. The prefixes are usually added to the commit subject line to indicate the type or purpose of the commit. 
+
+Here are some common commit prefixes and their meanings:
+
+- **feat:** A new feature or functionality added.
+- **fix:** A bug fix.
+- **docs:** Documentation updates or additions.
+- **style:** Code style changes (e.g., formatting, indentation).
+- **refactor:** Code refactoring without changing functionality.
+- **test:** Adding or updating test cases.
+- **chore:** Maintenance tasks, build process, or other non-functional changes.
+
+Example of a conventional commit message:
+```
+feat: Add user authentication feature
+
+Implemented user authentication using JWT tokens for secure logins.
+```
+
+By using commit prefixes and following a commit message convention, it becomes easier to understand the purpose of each commit in a version control history, especially when browsing through commit logs or reviewing changes.
 
 ## License
 
