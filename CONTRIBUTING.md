@@ -10,7 +10,7 @@ Thank you for considering contributing to S3Blitzer! We appreciate your interest
   - [Creating Issues](#creating-issues)
   - [Creating Pull Requests](#creating-pull-requests)
 - [Style Guide](#style-guide)
-- [Conventional Commit Message](#git-commit-prefixes)
+- [Conventional Commit Message](#conventional-commit-message)
 - [License](#license)
 
 ## Code of Conduct
@@ -35,7 +35,7 @@ Please note that this project has adopted a [Code of Conduct](CODE_OF_CONDUCT.md
 
 4. Make your changes and test them thoroughly.
 
-5. Commit your changes using [Conventional Commit Message](#git-commit-prefixes) format.
+5. Commit your changes using [Conventional Commit Message](#conventional-commit-message) format.
 
 6. Push your changes to your forked repository.
 
@@ -55,7 +55,7 @@ If you encounter any bugs, have feature requests, or find any areas of improveme
 
 We welcome contributions from the community. When creating a pull request, please ensure the following:
 
-1. Follow the [Conventional Commit Message](#git-commit-prefixes) format for your commits.
+1. Follow the [Conventional Commit Message](#conventional-commit-message) format for your commits.
 
 2. Provide a clear and concise description of your changes in the pull request.
 
