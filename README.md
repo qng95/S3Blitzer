@@ -1,4 +1,5 @@
 # S3Blitzer
+![Logo](logo.png)
 
 ## Overview
 
