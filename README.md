@@ -71,7 +71,3 @@ Contributions to this load testing tool are welcome! If you find any issues or h
 ## License
 
 This project is licensed under the [Apache License](LICENSE).
-
----
-
-Remember to update the sections with appropriate content specific to your load testing tool. Include information about how to run the tests, how to interpret the results, and any other details that can help users understand and use the tool effectively. Additionally, consider adding a `CONTRIBUTING.md` file to provide guidelines for potential contributors.
