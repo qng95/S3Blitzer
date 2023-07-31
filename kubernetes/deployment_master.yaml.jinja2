@@ -16,10 +16,12 @@ spec:
     spec:
       containers:
       - name: locust-master
-        image: s3blitzer:latest
-        imagePullPolicy: Never
-        command: [ "locust" ]
-        args: [ "-f", "/s3blitzer/s3blitzer.py", "--master" ]
+        image: quannguyen2281995/s3blitzer:linux_amd64_latest
+        imagePullPolicy: Always
+        command: [ "python3" ]
+        args: [ "-m", "locust", "-f", "/s3blitzer/s3blitzer.py", "--master" ]
         ports:
         - containerPort: 8089
         - containerPort: 5557
+      imagePullSecrets:
+        - name: regcred

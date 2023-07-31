@@ -1,4 +1,4 @@
-FROM python:3.11.4
+FROM --platform=linux/amd64 python:3.11.4
 
 COPY s3blitzer /s3blitzer/
 COPY requirements.txt /s3blitzer/

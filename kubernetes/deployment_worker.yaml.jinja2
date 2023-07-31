@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-worker
+  labels:
+    app: locust-worker
+spec:
+  replicas: {{ data.locust_workers }}
+  selector:
+    matchLabels:
+      app: locust-worker
+  template:
+    metadata:
+      labels:
+        app: locust-worker
+    spec:
+      containers:
+      - name: locust-worker
+        image: quannguyen2281995/s3blitzer:linux_amd64_latest
+        imagePullPolicy: Always
+        command: [ "python3" ]
+        args: [ "-m", "locust", "-f", "/s3blitzer/s3blitzer.py", "--worker", "--master-host", "locust-master-private" ]
+      imagePullSecrets:
+        - name: regcred
+

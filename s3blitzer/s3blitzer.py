@@ -12,8 +12,8 @@ class BotoClient:
     def __init__(self):
         self.s3_client = boto3.client(
             's3',
-            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=cfg.AWS_SECRET_ACCESS_KEY,
+            aws_access_key_id=cfg.S3_ACCESS_KEY_ID,
+            aws_secret_access_key=cfg.S3_SECRET_ACCESS_KEY,
             region_name=cfg.AWS_REGION_NAME
         )
 
@@ -24,7 +24,7 @@ class BotoClient:
         }
     )
     def upload_file_to_s3(self, file_path, key_name):
-        self.s3_client.upload_file(file_path, cfg.BUCKET_NAME, key_name)
+        self.s3_client.upload_file(file_path, cfg.S3_BUCKET_NAME, key_name)
 
 
 class S3TasksBoto3(TaskSet):
