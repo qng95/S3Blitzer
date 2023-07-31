@@ -1,1 +1,9 @@
 .vscode/
+.idea/
+venv/
+docs/_site/
+**/__pycache__/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform.lock.hcl
+**/.terraform/

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-master
+  labels:
+    app: locust-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-master
+  template:
+    metadata:
+      labels:
+        app: locust-master
+    spec:
+      containers:
+      - name: locust-master
+        image: s3blitzer:latest
+        imagePullPolicy: Never
+        command: [ "locust" ]
+        args: [ "-f", "/s3blitzer/s3blitzer.py", "--master" ]
+        ports:
+        - containerPort: 8089
+        - containerPort: 5557
