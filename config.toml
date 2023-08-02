@@ -3,7 +3,7 @@
 dockerconfigjson=""
 
 [service]
-locust_image="index.docker.io/quannguyen2281995/s3blitzer:linux_amd64_latest"
+locust_image="index.docker.io/quannguyen2281995/s3blitzer:latest_linux_amd64"
 locust_workers=4
 
 [aws]
