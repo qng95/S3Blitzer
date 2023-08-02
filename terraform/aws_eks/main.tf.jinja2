@@ -64,7 +64,7 @@ module "eks" {
     {% for group in eks.node_group %}
         {{ group }} = {
             name           = "{{ eks.node_group[group].name }}"
-            instance_types = {{ eks.node_group[group].instance_types }}
+            instance_types = [{{ eks.node_group[group].instance_types|map('tojson')|join(",") }}]
             min_size       = {{ eks.node_group[group].min_size }}
             max_size       = {{ eks.node_group[group].max_size }}
             desired_size   = {{ eks.node_group[group].desired_size }}
