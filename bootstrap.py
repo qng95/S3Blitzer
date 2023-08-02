@@ -23,7 +23,8 @@ class CommandExecutor:
                      f"\ninput = '{input}'"
                      f"\nenv = {env}"
                      f"\nbackground = '{background}'"
-                     f"\ncommand = '{' '.join(args)}'")
+                     f"\ncommand = '{' '.join(args)}'"
+                     "\n")
 
         if not self.dry_run:
             starttime = time.time()
@@ -39,11 +40,11 @@ class CommandExecutor:
                 stderr = proc.stderr.decode("utf-8", "ignore")
 
                 if stdout.strip():
-                    logging.info(f"Command stdout:\n{stdout}")
+                    logging.info(f"Command stdout:\n{stdout}\n")
                 if stderr.strip():
-                    logging.info(f"Command stderr:\n{stderr}")
+                    logging.info(f"Command stderr:\n{stderr}\n")
 
-                logging.info(f"Command returncode={proc.returncode} , execution_time={time.time() - starttime}")
+                logging.info(f"Command returncode={proc.returncode} , execution_time={time.time() - starttime}\n")
 
 
 class Config:
@@ -61,12 +62,12 @@ class Config:
         self.__template()
 
     def __init_config(self):
-        logging.info(f"Initializing config data from {self.config_file}")
+        logging.info(f"Initializing config data from {self.config_file}\n")
         with open(self.config_file, "rb") as f:
             self.config = tomllib.load(f)
 
     def __template(self):
-        logging.info(f"Templating all .jinja2 config file with config data")
+        logging.info(f"Templating all .jinja2 config file with config data\n")
         jinja_env = jinja2.Environment()
         for root, _, files in os.walk(BASE_DIR):
             for file in files:
@@ -74,7 +75,7 @@ class Config:
                     fpath = os.path.join(root, file)
 
                     if self.verbose:
-                        logging.debug(f"Templating {fpath}")
+                        logging.debug(f"Templating {fpath}\n")
 
                     with open(fpath, 'r') as f:
                         content = f.read()
@@ -90,7 +91,8 @@ def deploy(cfg: Config, command_executor: CommandExecutor):
     # init and apply terraform
     args = [
         "terraform",
-        "init"
+        "init",
+        "-auto-approve"
     ]
     # TODO: dynamic CWD, for now we only have aws+eks
     cwd = os.path.join(BASE_DIR, "terraform", "aws_eks")
@@ -98,7 +100,8 @@ def deploy(cfg: Config, command_executor: CommandExecutor):
 
     args = [
         "terraform",
-        "apply"
+        "apply",
+        "-auto-approve"
     ]
     cwd = os.path.join(BASE_DIR, "terraform", "aws_eks")
     command_executor.execute(args=args, cwd=cwd)
@@ -174,7 +177,8 @@ def destroy(cfg: Config, command_executor: CommandExecutor):
     # init and apply terraform
     args = [
         "terraform",
-        "init"
+        "init",
+        "-auto-approve"
     ]
     # TODO: dynamic CWD, for now we only have aws+eks
     cwd = os.path.join(BASE_DIR, "terraform", "aws_eks")
@@ -182,7 +186,8 @@ def destroy(cfg: Config, command_executor: CommandExecutor):
 
     args = [
         "terraform",
-        "destroy"
+        "destroy",
+        "-auto-approve"
     ]
     cwd = os.path.join(BASE_DIR, "terraform", "aws_eks")
     command_executor.execute(args=args, cwd=cwd)
@@ -200,6 +205,10 @@ def main():
 
     try:
         config = Config(config_file=args.config_file, dry_run=args.dry_run, verbose=args.verbose)
+        if config.verbose:
+            logging.getLogger('root').setLevel('DEBUG')
+        else:
+            logging.getLogger('root').setLevel('INFO')
         command_executor = CommandExecutor(verbose=config.verbose, dry_run=config.dry_run)
         match command:
             case 'deploy':
