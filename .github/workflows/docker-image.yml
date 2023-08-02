@@ -29,5 +29,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: latest_linux_amd64
+          tags: quannguyen2281995/s3blitzer:latest_linux_amd64
           labels: ${{ steps.meta.outputs.labels }}
