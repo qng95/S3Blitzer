@@ -9,13 +9,13 @@ terraform {
 }
 
 provider "aws" {
-  region = var.region
+  region = "{{ aws.target_region }}"
 }
 
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = var.cluster_name
+  cluster_name = "{{ aws.cluster_name }}"
 }
 
 module "vpc" {
@@ -57,32 +57,20 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
+    ami_type = "{{ eks.ami_type }}"
   }
 
   eks_managed_node_groups = {
-    one = {
-      name = "node-group-1"
-
-      instance_types = ["t3.small"]
-
-      min_size     = 1
-      max_size     = 2
-      desired_size = 2
-    }
+    {% for group in eks.node_group %}
+        {{ group }} = {
+            name           = "{{ eks.node_group[group].name }}"
+            instance_types = {{ eks.node_group[group].instance_types }}
+            min_size       = {{ eks.node_group[group].min_size }}
+            max_size       = {{ eks.node_group[group].max_size }}
+            desired_size   = {{ eks.node_group[group].desired_size }}
+        }
+    {% endfor %}
   }
-}
-
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "eu-central-1"
-}
-
-variable "cluster_name" {
-  description = "EKS cluster name"
-  type        = string
-  default     = "k8s-loadtests"
 }
 
 output "cluster_endpoint" {

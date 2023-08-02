@@ -9,3 +9,4 @@ docs/_site/
 **/.terraform.tfstate.lock.info
 **/.terraform/
 **/.secrets/
+**/kubeconfig

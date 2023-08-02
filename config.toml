@@ -1,0 +1,22 @@
+[service]
+locust_image="quannguyen2281995/s3blitzer:linux_amd64_latest"
+locust_workers=4
+
+[aws]
+target_region="eu-central-1"
+cluster_name="k8s-loadtests"
+
+[eks]
+ami_type="AL2_x86_64"
+
+    [eks.node_group]
+        [eks.node_group.one]
+        name="node-group-1"
+        instance_types=["t3.small"]
+        min_size=1
+        max_size=2
+        desired_size=2
+
+
+
+

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: locust-worker
 spec:
-  replicas: {{ data.locust_workers }}
+  replicas: {{ service.locust_workers }}
   selector:
     matchLabels:
       app: locust-worker
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: locust-worker
-        image: quannguyen2281995/s3blitzer:linux_amd64_latest
+        image: {{ service.locust_image }}
         imagePullPolicy: Always
         command: [ "python3" ]
         args: [ "-m", "locust", "-f", "/s3blitzer/s3blitzer.py", "--worker", "--master-host", "locust-master-private" ]
