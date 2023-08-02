@@ -5,7 +5,7 @@ COPY requirements.txt /s3blitzer/
 
 
 RUN \
-    mkdir -p /s3blitzer/testfiles \
+    mkdir -p /s3blitzer/testfiles/ && \
     python3 -m pip install -r /s3blitzer/requirements.txt
 
 
