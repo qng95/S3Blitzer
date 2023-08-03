@@ -93,7 +93,7 @@ class Config:
                             f.write(output)
 
 
-def deploy(cfg: Config, command_executor: CommandExecutor):
+def deploy(cfg: Config, command_executor: CommandExecutor, update=True):
     # init and apply terraform
     args = [
         "terraform",
@@ -160,17 +160,36 @@ def deploy(cfg: Config, command_executor: CommandExecutor):
         logging.warning(f"dockerconfigjson is not configured or not exists at path {dockerconfigjson}. "
                         f"Make sure that the configured docker image can be pull without authentication required.")
 
-    args = [
-        "kubectl",
-        f"--kubeconfig={os.path.join(BASE_DIR, 'kubeconfig')}",
-        "apply",
-        "-R",
-        f"-f={os.path.join(BASE_DIR, 'kubernetes')}/"
-    ]
-    cwd = os.path.join(BASE_DIR, "kubernetes")
-    exit_code = command_executor.execute(args=args, cwd=cwd)
-    if exit_code != 0:
-        raise Exception("Failed to create kubernetes resources")
+    if update:
+        args = [
+            "kubectl",
+            f"--kubeconfig={os.path.join(BASE_DIR, 'kubeconfig')}",
+            "rollout",
+            "restart",
+            "-R",
+            f"-f={os.path.join(BASE_DIR, 'kubernetes')}/",
+            "--selector=function=locust-backend",
+        ]
+        cwd = os.path.join(BASE_DIR, "kubernetes")
+        exit_code = command_executor.execute(args=args, cwd=cwd)
+        if exit_code != 0:
+            raise Exception("Failed to rollout restart kubernetes resources")
+    else:
+        args = [
+            "kubectl",
+            f"--kubeconfig={os.path.join(BASE_DIR, 'kubeconfig')}",
+            "apply",
+            "-R",
+            f"-f={os.path.join(BASE_DIR, 'kubernetes')}/"
+        ]
+        cwd = os.path.join(BASE_DIR, "kubernetes")
+        exit_code = command_executor.execute(args=args, cwd=cwd)
+        if exit_code != 0:
+            raise Exception("Failed to create kubernetes resources")
+
+    # wait until public ip available
+    # TODO: should do polling instead
+    time.sleep(5)
 
     args = [
         "kubectl",
@@ -258,7 +277,7 @@ def destroy(cfg: Config, command_executor: CommandExecutor):
 
 def main():
     parser = argparse.ArgumentParser("S3Blitzer bootstrapping")
-    parser.add_argument("command", choices=["deploy", "destroy", "template"], type=str, help="command to execute")
+    parser.add_argument("command", choices=["deploy", "destroy", "update"], type=str, help="command to execute")
     parser.add_argument("-d", "--dry-run", action="store_true", help="don't execute just log the what will be done")
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose debug output")
     parser.add_argument("-c", "--config-file", help="specified different config file")
@@ -275,12 +294,11 @@ def main():
         command_executor = CommandExecutor(verbose=config.verbose, dry_run=config.dry_run)
         match command:
             case 'deploy':
-                deploy(config, command_executor)
+                deploy(config, command_executor, update=False)
             case 'destroy':
                 destroy(config, command_executor)
-            case 'template':
-                # does nothing
-                pass
+            case 'update':
+                deploy(config, command_executor, update=True)
             case _:
                 parser.print_help()
     except Exception as e:

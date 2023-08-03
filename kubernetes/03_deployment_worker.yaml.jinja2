@@ -4,15 +4,18 @@ metadata:
   name: locust-worker
   labels:
     app: locust-worker
+    function: locust-backend
 spec:
   replicas: {{ service.locust_workers }}
   selector:
     matchLabels:
       app: locust-worker
+      function: locust-backend
   template:
     metadata:
       labels:
         app: locust-worker
+        function: locust-backend
     spec:
       containers:
       - name: locust-worker
